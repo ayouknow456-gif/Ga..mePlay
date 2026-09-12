@@ -1,5 +1,5 @@
 /* =========================================================
-   Play With Yok — Sound & Speech helpers (no external assets)
+   Play With Yok — Sound & Speech helpers (Updated for Male Voice)
    ========================================================= */
 
 const PWY = (() => {
@@ -39,19 +39,28 @@ const PWY = (() => {
     [0,0.14,0.28].forEach(d=> tone({freq:220, duration:0.14, type:'square', gain:0.14, delay:d}));
   }
 
-  // ---------------- speech ----------------
+  // ---------------- speech (Updated) ----------------
   let thVoice = null;
   function pickVoice(){
     const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
-    thVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('th')) || null;
+    const thVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('th'));
+    
+    // พยายามหาเสียงผู้ชายก่อน (ถ้ามีในเครื่อง)
+    thVoice = thVoices.find(v => 
+      v.name.toLowerCase().includes('male') || 
+      v.name.toLowerCase().includes('niwat') || // ชื่อเสียงผู้ชายไทยในบางระบบ
+      v.name.toLowerCase().includes('prachya')
+    ) || thVoices[0] || null; // ถ้าไม่เจอ ให้เอาเสียงไทยตัวแรกสุด
+    
     return thVoice;
   }
+  
   if('speechSynthesis' in window){
     speechSynthesis.onvoiceschanged = pickVoice;
     pickVoice();
   }
 
-  function speak(text, {rate=1, pitch=1, volume=1, interrupt=true}={}){
+  function speak(text, {rate=0.95, pitch=0.75, volume=1, interrupt=true}={}){
     if(!('speechSynthesis' in window)) return;
     if(interrupt) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
