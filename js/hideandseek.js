@@ -1,8 +1,8 @@
 (() => {
   // interval = ms ระหว่างตัวเลข | speakRate = ความเร็วพูด
   const SPEEDS = {
-    normal:  { interval:1000, speakRate:1.0,  label:'ปกติ'  },
-    medium:  { interval:700,  speakRate:1.2,  label:'กลาง'  },
+    normal:  { interval:1000, speakRate:0.50,  label:'ปกติ'  },
+    medium:  { interval:700,  speakRate:1.0,  label:'กลาง'  },
     fast:    { interval:450,  speakRate:1.5,  label:'เร็ว'  },
     extreme: { interval:260,  speakRate:2.0,  label:'แรง'   },
   };
