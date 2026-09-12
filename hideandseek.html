@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ซ่อนหา — Play With Yok</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .view{ display:none; }
+  .view.active{ display:flex; }
+  #countView{ flex-direction:column; align-items:center; gap:22px; }
+
+  .ring-wrap{
+    position:relative;
+    width:min(72vw,320px);
+    aspect-ratio:1/1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ring-wrap svg{ width:100%; height:100%; transform:rotate(-90deg); }
+  .ring-bg{ stroke:rgba(255,255,255,0.12); }
+  /* ลบ transition ออก → อัปเดตทันทีทุก tick ไม่ค้าง */
+  .ring-fg{ stroke:url(#ringGrad); stroke-linecap:round; }
+
+  /* ตัวเลขใหญ่ขึ้น อ่านง่ายขึ้นชัดเจน */
+  .counter-display{
+    position:absolute;
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:min(30vw,160px);
+    line-height:1;
+    background:linear-gradient(160deg, #fff 20%, var(--gold) 60%, var(--pink));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 6px 24px rgba(255,201,60,0.3));
+    /* ไม่มี animation fade เพื่อให้อ่านได้ทัน */
+    letter-spacing:-2px;
+  }
+
+  #finalBanner{ display:none; }
+</style>
+</head>
+<body>
+
+<div class="ambient"><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="stage">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Play With Yok</div>
+    <a href="games.html" class="back-link">← เลือกเกม</a>
+  </div>
+
+  <!-- SETUP VIEW -->
+  <section id="setupView" class="view active card panel">
+    <div class="stack" style="align-items:flex-start;">
+      <h1 style="font-size:clamp(24px,4.5vw,32px);">🙈 ซ่อนหา</h1>
+      <p class="muted" style="font-size:15px;">ตั้งเวลานับ เลือกความเร็ว แล้วกดเริ่ม</p>
+
+      <div class="field" style="margin-top:6px;">
+        <label for="secInput">เวลานับ (วินาที)</label>
+        <input id="secInput" class="input" type="number" min="3" max="120" value="20" inputmode="numeric">
+      </div>
+
+      <div class="field">
+        <label>ความเร็วในการนับ</label>
+        <div class="pill-group" id="speedGroup">
+          <button class="pill active" data-speed="normal">ปกติ</button>
+          <button class="pill" data-speed="medium">กลาง</button>
+          <button class="pill" data-speed="fast">เร็ว</button>
+          <button class="pill" data-speed="extreme">แรง</button>
+        </div>
+      </div>
+
+      <button class="btn block" id="startBtn" style="margin-top:10px;">▶️ เริ่มนับ</button>
+    </div>
+  </section>
+
+  <!-- COUNTING VIEW -->
+  <section id="countView" class="view">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFC93C"/>
+            <stop offset="100%" stop-color="#FF5E9E"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-bg" cx="100" cy="100" r="90" fill="none" stroke-width="16"/>
+        <circle class="ring-fg" id="ringFg" cx="100" cy="100" r="90" fill="none" stroke-width="16"/>
+      </svg>
+      <div class="counter-display" id="counterNum">0</div>
+    </div>
+
+    <p class="muted" id="countStatus" style="font-size:16px; font-weight:600;">กำลังนับ...</p>
+    <button class="btn ghost" id="cancelBtn">ยกเลิก</button>
+
+    <div id="finalBanner" class="center-col">
+      <p class="banner-final">🔦 เริ่มหาแล้ว!</p>
+      <div style="display:flex; gap:12px; margin-top:14px;">
+        <button class="btn" id="recountBtn">🔁 นับใหม่</button>
+        <a href="games.html" class="btn ghost">เลือกเกมอื่น</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">ซ่อนให้มิด อย่าให้ใครหาเจอ! 🌙</footer>
+</div>
+
+<script src="js/sound.js"></script>
+<script src="js/hideandseek.js"></script>
+</body>
+</html>

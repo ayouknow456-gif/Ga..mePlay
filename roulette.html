@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วงล้อสุ่มชื่อ — Play With Yok</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .view{ display:none; }
+  .view.active{ display:flex; }
+  #wheelView{ flex-direction:column; align-items:center; gap:22px; }
+  .wheel-actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .count-hint{ font-size:14px; color:var(--muted-2); }
+
+  /* เข็มอยู่กับที่ บนสุด — วงล้อหมุนผ่าน canvas */
+  .wheel-wrap{
+    position:relative;
+    width:min(78vw,380px);
+    aspect-ratio:1/1;
+    margin:6px auto;
+  }
+  .wheel-wrap canvas{
+    width:100%; height:100%;
+    display:block;
+    filter:drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+    /* วงล้อ = canvas ที่วาดใหม่ทุก frame ไม่ rotate ด้วย CSS */
+  }
+  /* เข็มชี้ลงมาจากด้านบน */
+  .wheel-pointer{
+    position:absolute;
+    top:-8px; left:50%;
+    transform:translateX(-50%);
+    width:0; height:0;
+    border-left:16px solid transparent;
+    border-right:16px solid transparent;
+    border-top:32px solid var(--gold);
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));
+    z-index:3;
+  }
+  .wheel-hub{
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:22%; height:22%; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff, var(--gold) 60%, var(--gold-2));
+    box-shadow:0 6px 20px rgba(0,0,0,.45), inset 0 -3px 6px rgba(0,0,0,.2);
+    z-index:2;
+  }
+  /* ไม่มี CSS rotate ใดๆ บน canvas wrapper */
+</style>
+</head>
+<body>
+
+<div class="ambient"><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="stage">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Play With Yok</div>
+    <a href="games.html" class="back-link">← เลือกเกม</a>
+  </div>
+
+  <!-- SETUP VIEW -->
+  <section id="setupView" class="view active card panel" style="width:100%;">
+    <div class="center-col" style="align-items:flex-start; text-align:left; width:100%;">
+      <h1 style="font-size:clamp(24px,4.5vw,32px);">🎡 วงล้อสุ่มชื่อ</h1>
+      <p class="muted" style="font-size:15px;">พิมพ์ชื่อแล้วกดเพิ่ม อย่างน้อย 2 ชื่อขึ้นไปจึงจะหมุนได้<br>
+      <small style="color:var(--muted-2);">🎯 เข็มอยู่กับที่ด้านบน — ชื่อใดหยุดตรงเข็มคือผู้โชคดี</small></p>
+
+      <div class="input-row" style="margin-top:6px;">
+        <input id="nameInput" class="input" type="text" placeholder="พิมพ์ชื่อ แล้วกด Enter" maxlength="24">
+        <button class="btn sm" id="addBtn" style="flex-shrink:0;">+ เพิ่ม</button>
+      </div>
+
+      <div class="chip-list" id="chipList" style="margin-top:8px;"></div>
+      <p class="count-hint" id="countHint">ยังไม่มีชื่อในวงล้อ</p>
+
+      <div style="display:flex; gap:12px; width:100%; margin-top:14px; flex-wrap:wrap;">
+        <button class="btn" id="startSpinBtn" disabled>🎯 เริ่มหมุน</button>
+        <button class="btn ghost" id="clearAllBtn">ล้างทั้งหมด</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHEEL VIEW -->
+  <section id="wheelView" class="view">
+    <div class="wheel-wrap">
+      <div class="wheel-pointer"></div>
+      <canvas id="wheelCanvas" width="600" height="600"></canvas>
+      <div class="wheel-hub"></div>
+    </div>
+
+    <div class="wheel-actions">
+      <button class="btn" id="spinBtn">🎯 หมุนวงล้อ</button>
+      <button class="btn ghost" id="editNamesBtn">✏️ แก้รายชื่อ</button>
+    </div>
+    <p class="count-hint" id="wheelCountHint"></p>
+  </section>
+
+  <footer class="foot">กดหมุน แล้วรอลุ้นผู้โชคดี 🎉</footer>
+</div>
+
+<!-- RESULT MODAL -->
+<div class="modal-veil" id="resultModal" style="display:none;">
+  <div class="card modal">
+    <p class="eyebrow">🎉 ผลการหมุน</p>
+    <h2 id="winnerText">ผู้โชคดีคือ ...</h2>
+    <div class="actions">
+      <button class="btn crimson" id="removeOptionBtn">ลบตัวเลือกนี้</button>
+      <button class="btn ghost" id="restartBtn">เริ่มใหม่</button>
+      <button class="btn" id="okBtn">ตกลง</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/sound.js"></script>
+<script src="js/roulette.js"></script>
+</body>
+</html>

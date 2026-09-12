@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เลือกเกม — Play With Yok</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .hub-head{ text-align:center; margin-bottom:8px; }
+  .hub-head h1{ font-size:clamp(26px,5vw,38px); margin-bottom:10px; }
+  .hub-head p{ color:var(--muted); font-size:15.5px; }
+</style>
+</head>
+<body>
+
+<div class="ambient"><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="stage">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Play With Yok</div>
+    <a href="index.html" class="back-link">← หน้าแรก</a>
+  </div>
+
+  <div class="hub-head" style="margin-bottom:30px;">
+    <h1>เลือกเกมที่อยากเล่น</h1>
+    <p>แต่ละเกมมีวิธีเล่นและบรรยากาศของตัวเอง กดเข้าไปแล้วเริ่มได้เลย</p>
+  </div>
+
+  <div class="game-grid">
+    <a class="game-card" style="--gc:var(--gold)" href="roulette.html" onclick="PWY.click()">
+      <div class="icon">🎡</div>
+      <h3>วงล้อสุ่มชื่อ</h3>
+      <p>ใส่รายชื่อ หมุนวงล้อ ลุ้นว่าใครจะโดนเลือก เข็มอยู่กับที่ ชื่อหยุดตรงไหนคือผู้โชคดี</p>
+      <span class="go">เล่นเลย →</span>
+    </a>
+
+    <a class="game-card" style="--gc:var(--teal)" href="hideandseek.html" onclick="PWY.click()">
+      <div class="icon">🙈</div>
+      <h3>ซ่อนหา</h3>
+      <p>ตั้งเวลาซ่อน เลือกความเร็วในการนับ ระบบนับให้อัตโนมัติพร้อมเสียงพูด แล้วประกาศเริ่มหา</p>
+      <span class="go">เล่นเลย →</span>
+    </a>
+
+    <a class="game-card" style="--gc:var(--sky)" href="police-thief.html" onclick="PWY.click()">
+      <div class="icon">🚓</div>
+      <h3>ตำรวจจับโจร</h3>
+      <p>แบ่งทีมตำรวจ-โจรแบบสุ่ม ระบบจำประวัติเพื่อไม่ให้คนเดิมได้เป็นตำรวจซ้ำบ่อยเกินไป</p>
+      <span class="go">เล่นเลย →</span>
+    </a>
+
+    <a class="game-card" style="--gc:var(--crimson)" href="play-asus.html" onclick="PWY.click()">
+      <div class="icon">🎭</div>
+      <h3>Play ASUS</h3>
+      <p>เกมสวมบทบาทลับ 3 ฝ่าย ฝ่ายดี ฝ่ายร้าย และฝ่ายกลาง บทบาทหายากสุ่มพิเศษ</p>
+      <span class="go">เล่นเลย →</span>
+    </a>
+
+    <a class="game-card" style="--gc:var(--pink)" href="kidgames.html" onclick="PWY.click()">
+      <div class="icon">🧒</div>
+      <h3>เกมวัยเด็ก</h3>
+      <p>เป่ายิ้งฉุบ ทายตัวเลข ปิดตาชิมรส และตบมือตามจังหวะ เล่นได้ทุกที่ไม่ต้องมีอุปกรณ์</p>
+      <span class="go">เล่นเลย →</span>
+    </a>
+  </div>
+
+  <footer class="foot">เลือกเกม แล้วเริ่มความสนุกได้เลย 🎉</footer>
+</div>
+
+<script src="js/sound.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play With Yok — เล่นเกมปาร์ตี้สุดมันส์</title>
+<meta name="description" content="รวมเกมปาร์ตี้ยอดฮิต วงล้อสุ่มชื่อ ซ่อนหา ตำรวจจับโจร และ Play ASUS ในเว็บเดียว">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .home-stage{
+    min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+    padding:32px 20px; position:relative; z-index:1;
+    gap:28px;
+  }
+  .home-stage.enter .hero-badge{ animation:rise .6s var(--ease-pop) both; }
+  .home-stage.enter .hero-logo{ animation:rise .7s .08s var(--ease-pop) both; }
+  .home-stage.enter .tagline{ animation:rise .7s .16s var(--ease-pop) both; }
+  .home-stage.enter .cta-row{ animation:rise .7s .26s var(--ease-pop) both; }
+  .home-stage.enter .mini-list{ animation:rise .7s .34s var(--ease-pop) both; }
+  @keyframes rise{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  .tagline{ max-width:520px; color:var(--muted); font-size:17px; line-height:1.6; }
+
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+
+  .mini-list{
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:560px;
+  }
+  .mini-tag{
+    padding:8px 16px; border-radius:999px;
+    background:var(--glass); border:1px solid var(--glass-brd);
+    font-size:13.5px; color:var(--muted);
+  }
+
+  .glow-orb{
+    position:absolute; width:520px; height:520px; border-radius:50%;
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(255,201,60,0.16), transparent 65%);
+    z-index:0; pointer-events:none;
+    animation:pulse-orb 6s ease-in-out infinite;
+  }
+  @keyframes pulse-orb{ 0%,100%{ transform:translate(-50%,-50%) scale(1);} 50%{ transform:translate(-50%,-50%) scale(1.15);} }
+</style>
+</head>
+<body>
+
+<div class="ambient"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="glow-orb"></div>
+
+<main class="home-stage enter">
+  <span class="hero-badge">🎪 เกมปาร์ตี้ครบจบในเว็บเดียว</span>
+  <h1 class="hero-logo">Play With Yok</h1>
+  <p class="tagline">รวมมิตรเกมสำหรับสังสรรค์ กับเพื่อน ครอบครัว หรือแคมป์ — สุ่มชื่อ นับเวลา แบ่งทีม แจกบทบาทลับ ครบในที่เดียว พร้อมเสียงพูดและแอนิเมชันสมจริง</p>
+  <div class="cta-row">
+    <a href="games.html" class="btn" onclick="PWY.click()">🎮 เข้าเล่นเลย</a>
+  </div>
+  <div class="mini-list">
+    <span class="mini-tag">🎡 วงล้อสุ่มชื่อ</span>
+    <span class="mini-tag">🙈 ซ่อนหา</span>
+    <span class="mini-tag">🚓 ตำรวจจับโจร</span>
+    <span class="mini-tag">🎭 Play ASUS</span>
+  </div>
+</main>
+
+<footer class="foot" style="position:relative;z-index:1;padding-bottom:24px;">Play With Yok · ทำด้วยใจ สำหรับคืนที่สนุกกับเพื่อน</footer>
+
+<script src="js/sound.js"></script>
+</body>
+</html>

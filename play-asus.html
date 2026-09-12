@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play ASUS — Play With Yok</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ===== VIEWS ===== */
+.view{ display:none; }
+.view.active{ display:flex; }
+#resultView{ flex-direction:column; align-items:center; gap:22px; width:100%; max-width:900px; }
+
+/* ===== ROLE PILLS in breakdown ===== */
+.role-breakdown{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:8px 0 4px; }
+.role-pill{
+  display:flex; align-items:center; gap:7px;
+  padding:9px 18px; border-radius:999px;
+  background:rgba(255,255,255,0.10); border:1.5px solid rgba(255,255,255,0.18);
+  font-size:14px; font-weight:700; font-family:var(--font-display);
+  color:#fff;
+}
+.crew-pill   { background:rgba(63,224,197,0.15); border-color:rgba(63,224,197,0.4);  color:#3FE0C5; }
+.bad-pill    { background:rgba(255,77,94,0.15);  border-color:rgba(255,77,94,0.4);   color:#FF4D5E; }
+.neutral-pill{ background:rgba(255,201,60,0.15); border-color:rgba(255,201,60,0.4);  color:#FFC93C; }
+
+/* ===== RESULT GRID ===== */
+.reveal-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+  gap:16px;
+  width:100%;
+}
+
+/* ===== ROLE CARDS ===== */
+.role-card{
+  background:rgba(255,255,255,0.93);
+  border:2px solid rgba(255,255,255,0.5);
+  border-radius:var(--r-md);
+  padding:20px 14px 18px;
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  text-align:center;
+  opacity:0; transform:translateY(16px) scale(.9);
+  animation:role-in .45s var(--ease-pop) forwards;
+  box-shadow:0 8px 28px rgba(0,0,0,0.13);
+  color:#1a1030;
+}
+@keyframes role-in{ to{ opacity:1; transform:translateY(0) scale(1); } }
+
+.role-card .role-icon{ font-size:36px; line-height:1; }
+.role-card .name{
+  font-family:var(--font-display); font-weight:700; font-size:15px;
+  color:#1a1030;
+}
+.role-card .role-name{
+  font-family:var(--font-display); font-weight:800; font-size:14px;
+  color:#1a1030;
+}
+.role-card .role-desc{
+  font-size:11.5px; line-height:1.45;
+  color:#5a4a80; margin-top:2px;
+}
+
+/* side badge */
+.role-side-badge{
+  display:inline-flex; align-items:center;
+  padding:4px 12px; border-radius:999px;
+  font-size:11px; font-weight:700; font-family:var(--font-display);
+  letter-spacing:.3px;
+}
+.side-crew    { background:#d6fdf5; color:#167a6a; border:1px solid #b2f0e4; }
+.side-bad     { background:#ffe6e8; color:#b52535; border:1px solid #ffc5c9; }
+.side-neutral { background:#fff8e0; color:#8a6500; border:1px solid #ffe999; }
+
+/* card accent border by side */
+.role-card.crew    { border-color:#3FE0C5; }
+.role-card.sheriff { border-color:#5FA8FF; box-shadow:0 8px 28px rgba(95,168,255,0.25); }
+.role-card.doctor  { border-color:#3FE0C5; box-shadow:0 8px 28px rgba(63,224,197,0.22); }
+.role-card.spy     { border-color:#FF4D5E; box-shadow:0 8px 28px rgba(255,77,94,0.22); }
+.role-card.neutral { border-color:#FFC93C; box-shadow:0 8px 28px rgba(255,201,60,0.22); }
+
+/* summary bar */
+#roleSummaryBar{
+  display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+}
+
+/* setup card — สว่างขึ้น */
+#setupView, #confirmView{
+  background:rgba(255,255,255,0.14);
+  border:1.5px solid rgba(255,255,255,0.28);
+}
+
+/* legend section */
+.legend-box{
+  width:100%;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.16);
+  border-radius:var(--r-md);
+  padding:16px 18px;
+  font-size:13px;
+  color:rgba(255,255,255,0.75);
+  line-height:1.7;
+}
+.legend-box strong{ color:#fff; font-family:var(--font-display); }
+
+/* rarity badge */
+.rarity-note{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 14px; border-radius:999px;
+  background:rgba(255,201,60,0.12); border:1px solid rgba(255,201,60,0.3);
+  font-size:12px; color:#FFC93C; font-weight:600;
+}
+
+/* result title */
+.result-title{
+  font-family:var(--font-display);
+  font-weight:800; font-size:clamp(22px,4vw,30px);
+  text-align:center;
+  background:linear-gradient(135deg, #fff 30%, #C9B8E8);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+</style>
+</head>
+<body>
+
+<div class="ambient"><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="stage">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Play With Yok</div>
+    <a href="games.html" class="back-link">← เลือกเกม</a>
+  </div>
+
+  <!-- ══════════ SETUP VIEW ══════════ -->
+  <section id="setupView" class="view active card panel">
+    <div class="stack" style="align-items:flex-start;">
+      <h1 style="font-size:clamp(24px,4.5vw,32px);">🎭 Play ASUS</h1>
+      <p class="muted" style="font-size:15px; line-height:1.6;">
+        เกมสวมบทบาทลับสไตล์ Among Us 🚀<br>
+        ต้องมีผู้เล่นอย่างน้อย <strong style="color:#fff;">4 คน</strong>
+      </p>
+
+      <div class="legend-box">
+        <strong>✅ ฝ่ายดี</strong> — ทำภารกิจ &amp; จับคนทรยศ<br>
+        <strong>🔪 ฝ่ายร้าย</strong> — ลอบสังหาร &amp; พรางตัว<br>
+        <strong>🎭 ฝ่ายกลาง</strong> — ชนะด้วยเงื่อนไขของตัวเอง
+        <span class="rarity-note" style="margin-top:8px;display:inline-flex;">⚠️ โอกาสเจอฝ่ายกลางน้อยมาก!</span>
+      </div>
+
+      <div class="input-row" style="margin-top:4px;">
+        <input id="nameInput" class="input" type="text" placeholder="พิมพ์ชื่อผู้เล่น แล้วกด Enter" maxlength="24">
+        <button class="btn sm" id="addBtn" style="flex-shrink:0;">+ เพิ่ม</button>
+      </div>
+      <div class="chip-list" id="chipList"></div>
+      <p class="muted small" id="countHint">ยังไม่มีผู้เล่น (ต้องการอย่างน้อย 4 คน)</p>
+
+      <div style="display:flex; gap:12px; width:100%; margin-top:10px; flex-wrap:wrap;">
+        <button class="btn crimson" id="nextBtn" disabled>ถัดไป →</button>
+        <button class="btn ghost" id="clearAllBtn">ล้างทั้งหมด</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ CONFIRM VIEW ══════════ -->
+  <section id="confirmView" class="view card panel">
+    <div class="center-col" style="width:100%;">
+      <h2 style="font-size:24px;">พร้อมสุ่มบทบาทหรือยัง?</h2>
+      <p class="muted" id="confirmSummary" style="font-size:15px;"></p>
+      <div class="role-breakdown" id="roleBreakdown"></div>
+      <p class="muted small" style="margin-top:4px; font-style:italic;">
+        * บทบาทพิเศษในแต่ละฝ่ายจะสุ่มแบบ weighted — บางบทบาทหายากมาก
+      </p>
+      <div style="display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; justify-content:center;">
+        <button class="btn crimson" id="assignBtn">🎲 สุ่มบทบาททั้งหมด</button>
+        <button class="btn ghost" id="backBtn">← ย้อนกลับ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ RESULT VIEW ══════════ -->
+  <section id="resultView" class="view">
+    <div class="result-title">บทบาทของทุกคนในรอบนี้ 🎴</div>
+    <div id="roleSummaryBar"></div>
+    <div class="reveal-grid" id="resultGrid"></div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+      <button class="btn crimson" id="reRollBtn">🎲 สุ่มใหม่</button>
+      <button class="btn ghost" id="editBtn">✏️ แก้ผู้เล่น</button>
+    </div>
+  </section>
+
+  <footer class="foot">ระวังตัวแฝงให้ดี... และอย่าไว้ใจใครง่ายๆ 🕵️</footer>
+</div>
+
+<script src="js/sound.js"></script>
+<script src="js/play-asus.js"></script>
+</body>
+</html>

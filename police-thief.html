@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตำรวจจับโจร — Play With Yok</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .view{ display:none; }
+  .view.active{ display:flex; }
+  #resultView{ flex-direction:column; align-items:center; gap:20px; width:100%; max-width:820px; }
+  .stepper{ display:flex; align-items:center; gap:14px; }
+  .stepper button{
+    width:44px; height:44px; border-radius:50%; border:1.5px solid var(--glass-brd);
+    background:rgba(255,255,255,0.06); color:var(--paper); font-size:20px; cursor:pointer;
+  }
+  .stepper .val{ font-family:var(--font-display); font-size:22px; font-weight:700; min-width:32px; text-align:center; }
+  .reveal-card .back.police{ background:linear-gradient(155deg,#5FA8FF,#2158b8); }
+  .reveal-card .back.thief{ background:linear-gradient(155deg,#FF4D5E,#a01c2c); }
+  .result-actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+</style>
+</head>
+<body>
+
+<div class="ambient"><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="stage">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Play With Yok</div>
+    <a href="games.html" class="back-link">← เลือกเกม</a>
+  </div>
+
+  <!-- SETUP VIEW -->
+  <section id="setupView" class="view active card panel">
+    <div class="stack" style="align-items:flex-start;">
+      <h1 style="font-size:clamp(24px,4.5vw,32px);">🚓 ตำรวจจับโจร</h1>
+      <p class="muted" style="font-size:15px;">เพิ่มผู้เล่นอย่างน้อย 3 คน แล้วกำหนดจำนวนตำรวจ ระบบจะช่วยไม่ให้คนเดิมโดนเป็นตำรวจซ้ำบ่อยเกินไป</p>
+
+      <div class="input-row" style="margin-top:6px;">
+        <input id="nameInput" class="input" type="text" placeholder="พิมพ์ชื่อผู้เล่น แล้วกด Enter" maxlength="24">
+        <button class="btn sm" id="addBtn" style="flex-shrink:0;">+ เพิ่ม</button>
+      </div>
+      <div class="chip-list" id="chipList"></div>
+      <p class="count-hint muted small" id="countHint">ยังไม่มีผู้เล่น</p>
+
+      <div class="field" style="margin-top:10px;">
+        <label>จำนวนตำรวจ</label>
+        <div class="stepper">
+          <button id="decBtn" type="button">−</button>
+          <span class="val" id="policeVal">1</span>
+          <button id="incBtn" type="button">+</button>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; width:100%; margin-top:14px; flex-wrap:wrap;">
+        <button class="btn sky" id="randomBtn" disabled>🎲 สุ่มทีม</button>
+        <button class="btn ghost" id="clearAllBtn">ล้างทั้งหมด</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT VIEW -->
+  <section id="resultView" class="view">
+    <p class="muted" style="text-align:center;">แตะการ์ดของตัวเองเพื่อดูบทบาท (การ์ดจะพลิกกลับให้อัตโนมัติ)</p>
+    <div class="reveal-grid" id="revealGrid"></div>
+    <div class="result-actions">
+      <button class="btn sky" id="reRollBtn">🎲 สุ่มใหม่</button>
+      <button class="btn ghost" id="backToSetupBtn">✏️ แก้ผู้เล่น</button>
+    </div>
+  </section>
+
+  <footer class="foot">ตำรวจต้องจับโจรให้ได้ก่อนหมดเวลา! 🚨</footer>
+</div>
+
+<script src="js/sound.js"></script>
+<script src="js/police-thief.js"></script>
+</body>
+</html>
