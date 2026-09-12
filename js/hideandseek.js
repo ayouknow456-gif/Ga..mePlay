@@ -13,7 +13,7 @@
   let speed = 'normal';
   let timer = null;
   let count = 0;
-  let total = 50;
+  let total = 20;
   const CIRC = 2 * Math.PI * 90;
 
   const setupView  = document.getElementById('setupView');
